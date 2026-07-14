@@ -37,19 +37,19 @@ The paradigm shifts the computational burden of logic from pure statistics to a 
 
 ### 2.1 K-65P v0 (Current)
 In the current implementation (RFC-002), the syntax is restricted to factual assertions and static conditionals without variables.
-* **Facts**: `[caliente fuego]` (Fire is hot).
-* **Rules**: `[si [tocar alguien fuego] [pasar [G algo malo] alguien]]` (If someone touches fire, something bad will happen to them).
+* **Facts**: `[HOT FIRE]` (Fire is hot).
+* **Rules**: `[IF [TOUCH SOMEONE FIRE] [HAPPEN [G SOMETHING BAD] SOMEONE]]` (If someone touches fire, something bad will happen to them).
 
 ### 2.2 K-65P v1 (Evolution)
 To support full homoiconicity (where rules are manipulable data structures), K-65P v1 introduces:
 1. **Structural Variables**: Represented by a wildcard prefix `?x` to support pattern matching and unification.
-2. **First-Class Rule Functor**: Represented as `[regla <nombre> <condición> <acción>]`.
+2. **First-Class Rule Functor**: Represented as `[RULE <name> <condition> <action>]`.
 
 Example:
 ```lisp
-[regla evitar-fuego (?x)
-  [si [tiene ?x fuego]
-      [quiere yo [no [tocar yo ?x]]]]]
+[RULE avoid-fire (?x)
+  [IF [HAVE ?x FIRE]
+      [WANT I [NOT [TOUCH I ?x]]]]]
 ```
 
 ---
@@ -59,12 +59,109 @@ Because K-65P rules are structured S-expressions, they map 1-to-1 to Prolog's Ho
 
 ```prolog
 % Generated Prolog code from K-65P
-evitar_fuego(X) :- tiene(X, fuego), quiere(yo, no(tocar(yo, X))).
+avoid_fire(X) :- have(X, fire), want(yo, no(touch(yo, X))).
 ```
 
 This allows the symbolic engine to immediately verify any statement proposed by BitNet, rendering AI logic **machine-checkable by construction**.
 
 ---
 
-## 4. Strategic Outlook
-Instead of teaching a neural network the infinitely complex rules of human grammar, the model's capacity is fully dedicated to learning the semantic flow of K-65P. By constraining the vocabulary space (via Vocabulary Gating) and focusing on universal primes, we can achieve high-level reasoning in models under 20M parameters, deployable on local edge devices.
+## 4. Multilingual Alignment
+
+Because Bit Net does not speak any single human language but processes thoughts directly as semantic glyph sequences, K-65P serves as a universal interlingua. Below is the mapping of the 65 Primes across five key languages, demonstrating the structural equivalence.
+
+### 4.1 The 65 Primes Translation Table
+
+| ID | Prime Symbol | Español | 中文 (Chinese) | Français | Deutsch |
+|---|---|---|---|---|---|
+| **0** | `I` | yo | 我 | je | ich |
+| **1** | `YOU` | tú | 你 | tu/vous | du |
+| **2** | `SOMEONE` | alguien | 某人 | quelqu'un | jemand |
+| **3** | `PEOPLE` | gente | 人们 | les gens | Menschen |
+| **4** | `SOMETHING` | algo | 某事/某物 | quelque chose | etwas |
+| **5** | `THING` | cosa | 东西 | chose | Ding |
+| **6** | `BODY` | cuerpo | 身体 | corps | Körper |
+| **7** | `PART` | parte | 部分 | partie | Teil |
+| **8** | `GOOD` | bueno | 好 | bon | gut |
+| **9** | `BAD` | malo | 坏 | mauvais | schlecht |
+| **10** | `BIG` | grande | 大 | grand | groß |
+| **11** | `SMALL` | pequeño | 小 | petit | klein |
+| **12** | `THINK` | pensar | 想 | penser | denken |
+| **13** | `KNOW` | saber | 知道 | savoir | wissen |
+| **14** | `WANT` | querer | 想要 | vouloir | wollen |
+| **15** | `FEEL` | sentir | 感觉 | sentir | fühlen |
+| **16** | `SEE` | ver | 看见 | voir | sehen |
+| **17** | `HEAR` | oír | 听见 | entendre | hören |
+| **18** | `SAY` | decir | 说 | dire | sagen |
+| **19** | `WORD` | palabra | 词 | mot | Wort |
+| **20** | `TRUE` | verdad | 真/对 | vrai | wahr |
+| **21** | `DO` | hacer | 做 | faire | tun |
+| **22** | `HAPPEN` | pasar | 发生 | arriver | geschehen |
+| **23** | `MOVE` | mover | 移动 | bouger | bewegen |
+| **24** | `TOUCH` | tocar | 触摸 | toucher | berühren |
+| **25** | `EXIST` | existir | 存在 | exister | existieren |
+| **26** | `MINE` | mío | 我的 | le mien | mein |
+| **27** | `LIVE` | vivir | 活 | vivre | leben |
+| **28** | `DIE` | morir | 死 | mourir | sterben |
+| **29** | `WHEN` | cuándo | 什么时候 | quand | wann |
+| **30** | `NOW` | ahora | 现在 | maintenant | jetzt |
+| **31** | `BEFORE` | antes | 以前 | avant | vorher |
+| **32** | `AFTER` | después | 以后 | après | nachher |
+| **33** | `LONG_TIME` | mucho_tiempo | 很久 | longtemps | lange Zeit |
+| **34** | `SHORT_TIME` | poco_tiempo | 一会儿 | peu de temps | kurze Zeit |
+| **35** | `MOMENT` | momento | 时刻 | moment | Moment |
+| **36** | `WHERE` | dónde | 哪里 | où | wo |
+| **37** | `HERE` | aquí | 这里 | ici | hier |
+| **38** | `ABOVE` | arriba | 上面 | au-dessus | oben |
+| **39** | `BELOW` | abajo | 下面 | au-dessous | unten |
+| **40** | `FAR` | lejos | 远 | loin | weit |
+| **41** | `NEAR` | cerca | 近 | près | nah |
+| **42** | `SIDE` | lado | 旁边 | côté | Seite |
+| **43** | `INSIDE` | dentro | 里面 | dedans | innen |
+| **44** | `NOT` | no | 不/没 | ne...pas | nicht |
+| **45** | `MAYBE` | quizá | 也许 | peut-être | vielleicht |
+| **46** | `CAN` | poder | 能 | pouvoir | können |
+| **47** | `BECAUSE` | porque | 因为 | parce que | weil |
+| **48** | `IF` | si | 如果 | si | wenn |
+| **49** | `VERY` | muy | 很 | très | sehr |
+| **50** | `MORE` | más | 更多 | plus | mehr |
+| **51** | `LIKE` | como | 像 | comme | wie |
+| **52** | `THIS` | este | 这个 | ceci | dies |
+| **53** | `SAME` | mismo | 同一个 | même | gleich |
+| **54** | `OTHER` | otro | 另一个 | autre | ander |
+| **55** | `ONE` | uno | 一 | un | eins |
+| **56** | `TWO` | dos | 二 | deux | zwei |
+| **57** | `SOME` | algunos | 一些 | quelques | einige |
+| **58** | `ALL` | todo | 所有 | tout | alle |
+| **59** | `MUCH` | mucho | 多 | beaucoup | viel |
+| **60** | `HOT` | caliente | 热 | chaud | heiß |
+| **61** | `COLD` | frío | 冷 | froid | kalt |
+| **62** | `WATER` | agua_prima | 水 | eau | Wasser |
+| **63** | `LIGHT` | luz | 光 | lumière | Licht |
+| **64** | `DARK` | oscuro | 黑暗 | sombre | dunkel |
+
+---
+
+## 5. Structured Multilingual Examples
+
+In K-65P, thoughts are encoded directly as sequence blocks. The first line exposes the underlying prime indices (structural glyph codes), followed by equivalent linguistic interpretations.
+
+### Example 1: Avoiding Fire
+```
+Code:     [ 48 [ 24 2 60 ] [ 22 4 9 ] ]
+English:  [ IF [ TOUCH SOMEONE HOT ] [ HAPPEN SOMETHING BAD ] ]
+Español:  [ SI [ TOCAR ALGUIEN CALIENTE ] [ PASAR ALGO MALO ] ]
+中文:     [ 如果 [ 触摸 某人 热 ] [ 发生 某事 坏 ] ]
+Français: [ SI [ TOUCHER QUELQU'UN CHAUD ] [ ARRIVER QUELQUE CHOSE DE MAL ] ]
+Deutsch:  [ WENN [ BERÜHREN JEMAND HEISS ] [ GESCHEHEN ETWAS SCHLECHTES ] ]
+```
+
+### Example 2: Desiring Perception
+```
+Code:     [ 14 0 [ 16 52 ] ]
+English:  [ WANT I [ SEE THIS ] ]
+Español:  [ QUERER YO [ VER ESTE ] ]
+中文:     [ 想要 我 [ 看见 这个 ] ]
+Français: [ VOULOIR JE [ VOIR CECI ] ]
+Deutsch:  [ WOLLEN ICH [ SEHEN DIES ] ]
+```
