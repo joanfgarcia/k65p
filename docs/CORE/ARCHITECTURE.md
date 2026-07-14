@@ -7,16 +7,21 @@
 
 ## 1. Core Principles
 
-### 1.1 Structural Homoiconicity
-Following the Lisp tradition (McCarthy, 1958), K-65P treats code and data as the same physical data structure:
-* **Atom**: A semantic prime. Indivisible, orthogonal semantic anchors (based on Anna Wierzbicka's Natural Semantic Metalanguage - NSM). Example: `WANT`, `FIRE`, `BAD`, `I`.
-* **List (S-Expression)**: An ordered sequence of Atoms or nested Lists. Example: `[FIRE HOT BAD]`.
+### 1.1 The Chemical Analogy of Meaning
+Meaning in K-65P is structured like physical chemistry, representing a massive shift away from dense, unstructured token embeddings:
 
-In K-65P, there are no raw strings or floating embedding vectors representing thoughts. Every logical step is represented as a structured AST tree.
+*   **Atoms (The 65 Semantic Primes)**: Irreducible, universal conceptual elements (based on Anna Wierzbicka's Natural Semantic Metalanguage). They form the "periodic table" of our cognitive language. Examples: `I`, `YOU`, `WANT`, `GOOD`, `BAD`, `MOVE`.
+*   **Molecules (The 65-Trit Glyphs)**: Individual concepts represented as a single 65-trit vector $\in \{-1, 0, 1\}^{65}$. A molecule is a composition of semantic atoms (some active positive, some negative, others inactive). Example: `fire` is not an atom, but a molecule composed of `[LIGHT: +1, HOT: +1, BAD: +1, DIE: +1]`.
+*   **Compounds (S-Expressions)**: Complex thoughts, sentences, or rules built by concatenating and nesting molecules into structured lists. Example: `[IF [TOUCH SOMEONE FIRE] [HAPPEN [G SOMETHING BAD] SOMEONE]]`.
 
-### 1.2 The Two-Speed Engine (System 1 / System 2)
+### 1.2 Distinguishing Bit and BitNet
+We maintain a strict boundary between the general underlying hardware framework and our cognitive implementation:
+*   **BitNet**: The generic, open-source 1.58b ternary quantization transformer architecture framework (originally developed by Microsoft). It provides the mathematical sustrato ($W \in \{-1, 0, 1\}$ weights and MatMul-free operations).
+*   **Bit**: Our specific developmental model trained sequentially via the Sovereign School curriculum on top of the compositional K-65P glyph vocabulary. Bit is the "living agent" whose cognitive weights we train.
+
+### 1.3 The Two-Speed Engine (System 1 / System 2)
 The paradigm shifts the computational burden of logic from pure statistics to a dual-speed cognitive engine:
-1. **System 1 (Neural Interpreter - Bit)**: A ternary-quantized transformer (BitNet) trained not on human language syntax, but on compiling, predicting, and interpreting K-65P S-Expressions. It provides ultra-fast, heuristic, and intuitive logical inference in milliseconds but is statistical and subject to "hallucinations" (albeit structured ones).
+1. **System 1 (Neural Interpreter - Bit)**: Instantiated as our ternary model **Bit** (leveraging the **BitNet** framework). It processes K-65P S-Expressions heuristically, generating fast, intuitive logical proposals.
 2. **System 2 (Symbolic Solver - Prolog)**: A formal execution engine (`PrologExpert`) that runs exact unification and backtracking. It parses K-65P rules, translates them to Horn clauses, and certifies logic against a local Knowledge Base. It cannot hallucinate.
 
 ```
@@ -24,7 +29,7 @@ The paradigm shifts the computational burden of logic from pure statistics to a 
        │ (Translation)
        ▼
  ┌──────────┐      K-65P      ┌──────────┐
- │  BitNet  │ ──────────────> │  Prolog  │
+ │   Bit    │ ──────────────> │  Prolog  │
  │ (System1)│   S-Expression  │ (System2)│
  └──────────┘                 └──────────┘
    Fast, Heuristic              Rigorous, Exact
@@ -62,13 +67,13 @@ Because K-65P rules are structured S-expressions, they map 1-to-1 to Prolog's Ho
 avoid_fire(X) :- have(X, fire), want(yo, no(touch(yo, X))).
 ```
 
-This allows the symbolic engine to immediately verify any statement proposed by BitNet, rendering AI logic **machine-checkable by construction**.
+This allows the symbolic engine to immediately verify any statement proposed by Bit, rendering AI logic **machine-checkable by construction**.
 
 ---
 
 ## 4. Multilingual Alignment
 
-Because Bit Net does not speak any single human language but processes thoughts directly as semantic glyph sequences, K-65P serves as a universal interlingua. Below is the mapping of the 65 Primes across five key languages, demonstrating the structural equivalence.
+Because Bit does not speak any single human language but processes thoughts directly as semantic glyph sequences, K-65P serves as a universal interlingua. Below is the mapping of the 65 Primes across five key languages, demonstrating the structural equivalence.
 
 ### 4.1 The 65 Primes Translation Table
 
