@@ -40,7 +40,29 @@
 | 1.4 | **Lexicon v0** (~200 molecules) | `k65p/data/` | The starter lexicon: survival + preschool inventory, curated from the frankenswarm clean census. Every molecule validated: glyph present, collision-free or collision-documented. |
 | 1.5 | **Translator harness** | `k65p/src/k65p/` | `human ↔ K-65P` is *generation-side* (RFC-002 §4): the harness defines the round-trip test (`K-65P → human → recompile → identical tree`) that any future compiler/decompiler must pass. A template-based ES/EN decompiler for the v0 constructs ships as reference (deterministic, no LLM). |
 
-**Gate G1**: `uv run pytest` green on bridge round-trips + lexicon integrity; RFC-003/004 merged.
+### 1.bis The Translator Constellation (Joan, 2026-07-16)
+
+K-65P is an **interlingua pivot** (the apex of the Vauquois triangle): every human language
+gets its *own* translator against the same frozen spec. This is the saving, not the cost —
+N languages need N translators instead of N×(N-1) pairwise systems. Two consequences bind
+this roadmap:
+
+1. **The Convergence Invariant** (pre-registered in the harness, 1.5): *one idea, one tree.*
+   Same-meaning sentences in different languages MUST compile to the **identical** canonical
+   K-65P tree — not merely two valid trees. The conformance suite carries N-lingual meaning
+   sets and asserts tree equality across languages. A translator that produces valid but
+   divergent trees FAILS conformance.
+2. **Translators are modules against a conformance suite** — the suite is ours; translators
+   can come from anyone (the Legión included). Historical note: classic interlingua MT died
+   of *completeness* (representing everything every language distinguishes). K-65P survives
+   by being deliberately lossy (register, tone and style are discarded by contract, RFC-002
+   §4) and by standing on NSM — the one semantic inventory built to exist in every human
+   language. The truly large surface is not code but *data*: per-language surface forms of
+   the molecular lexicon (RFC-004) — linear in languages, crowd/LLM-assistable, and always
+   auditable by the round-trip + convergence tests.
+
+**Gate G1**: `uv run pytest` green on bridge round-trips + lexicon integrity + the
+convergence suite seeded (≥20 meaning sets in es/en); RFC-003/004 merged.
 
 ## Phase 2 — First Verified Thought (the Lumo milestone)
 
