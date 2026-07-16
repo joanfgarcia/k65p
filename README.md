@@ -32,7 +32,7 @@ Meaning in K-65P is represented structurally like physical chemistry:
 ## 3. Disentangling Bit and BitNet
 
 We keep a clear distinction in our nomenclature:
-*   **BitNet**: The generic open-source architecture framework for 1.58b ternary quantization (developed by Microsoft), which provides the hardware-friendly MatMul-free sustrato.
+*   **BitNet**: The 1.58-bit ternary quantization architecture introduced by Microsoft Research (BitNet b1.58). Our sustrato is an independent, from-scratch implementation of that architecture — hardware-friendly and MatMul-free, but not Microsoft's framework.
 *   **Bit**: The specific cognitive agent model we train sequentially through the Sovereign School developmental curriculum on top of the K-65P semantic glyph structure.
 
 ---
@@ -40,14 +40,32 @@ We keep a clear distinction in our nomenclature:
 ## 4. Cognitive Architecture (System 1 & System 2)
 
 K-65P splits cognition into two collaborative velocities:
-* **System 1 (Neural Interpreter - Bit)**: A 19M parameter ternary-quantized interpreter (built on the BitNet framework) that evaluates K-65P S-Expressions heuristically, generating logical proposals instantly.
+* **System 1 (Neural Interpreter - Bit)**: A ternary-quantized interpreter that evaluates K-65P S-Expressions heuristically, generating logical proposals instantly. Bit grows by pain-driven neurogenesis, so any hand-written parameter count is stale by design — the living figure is in the Sovereign School state (`frankenswarm: school_state.json`).
 * **System 2 (Symbolic Solver - Prolog)**: A formal reasoning solver (`PrologExpert`) that verifies System 1 proposals against a local Knowledge Base using pattern matching and resolution.
 
 ---
 
-## 5. Getting Started
+## 5. The Canonical Form (read this before writing K-65P)
+
+**The canonical form of K-65P is numeric** — a prime is its id (0..64). Human languages are
+mechanical, reversible *renderings* resolved through the 65-prime table; they exist so a human
+can follow an example without memorizing the table, and they are never authoritative.
+`[si ...]`, `[IF ...]` and `[48 ...]` are the same compound, and the reference validator
+accepts all three. Every documented example follows the `Code:` + renderings block convention
+and is generated with the toolchain:
+
+```bash
+python main.py validate "[si [tocar alguien fuego] [pasar [G algo malo] alguien]]"
+python main.py canon    "[IF [TOUCH SOMEONE fuego] [HAPPEN [G SOMETHING BAD] SOMEONE]]"
+python main.py render zh "[48 [24 2 60] [22 4 9]]"
+```
+
+Full specification: [RFC-002 K-65P Canonical Syntax](docs/CORE/RFC-002_K65P_SYNTAX.md).
+
+## 6. Getting Started
 
 Check the core documents to dive into the architecture and conventions:
+* [RFC-002: Canonical Syntax & Reference Validator](docs/CORE/RFC-002_K65P_SYNTAX.md)
 * [Architecture Specifications](docs/CORE/ARCHITECTURE.md)
 * [Coding Conventions](CONVENTIONS.md)
 * [Protocol of Silence](docs/CORE/PROTOCOL_OF_SILENCE.md)
