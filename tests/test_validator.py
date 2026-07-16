@@ -3,40 +3,17 @@
 import pytest
 
 from k65p.core import Atom, parse_k65p
+from k65p.examples import SEED_EXAMPLES
 from k65p.primes import LANGUAGES, N_PRIMES, PRIMES, SYMBOL_TO_ID, symbol_for
 from k65p.validator import K65PResolveError, is_valid, linearize, render, resolve_atom, validate
 
-# The 20 hand-compiled seed examples from RFC-002 §3 (Spanish rendering).
-RFC_EXAMPLES_ES = [
-	"[ver yo algo]",
-	"[oír tú agua]",
-	"[caliente fuego]",
-	"[malo [G fuego caliente]]",
-	"[si [tocar alguien [G fuego caliente]] [pasar [G algo malo] alguien]]",
-	"[porque [mover tú lejos] [sentir yo malo]]",
-	"[querer yo agua]",
-	"[querer yo [hacer yo beber agua]]",
-	"[quizá [pasar lluvia]]",
-	"[poder [mover yo]]",
-	"[no [ver yo algo]]",
-	"[saber yo [bueno agua]]",
-	"[querer yo [decir tú verdad yo]]",
-	"[vivir gente aquí]",
-	"[antes [pequeño yo]]",
-	"[después [pasar [G algo malo]]]",
-	"[como [G cosa este] agua]",
-	"[morir [G gente todo]]",
-	"[porque [pensar yo] [existir yo]]",
-	"[si [tocar tú [G agua frío]] [sentir tú frío]]",
-]
 
-
-@pytest.mark.parametrize("example", RFC_EXAMPLES_ES)
+@pytest.mark.parametrize("example", SEED_EXAMPLES)
 def test_rfc_examples_are_valid(example: str) -> None:
 	assert validate(example) == []
 
 
-@pytest.mark.parametrize("example", RFC_EXAMPLES_ES)
+@pytest.mark.parametrize("example", SEED_EXAMPLES)
 def test_renderings_are_the_same_compound(example: str) -> None:
 	canonical = linearize(example)
 	for lang in LANGUAGES:
