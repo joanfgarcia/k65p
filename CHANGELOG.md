@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### [ARCH]
+- Phase 1 of the roadmap (dialect closure): RFC-003 Horn Bridge (K-65P ↔ Prolog, both directions, round-trip guaranteed over the seed corpus; executable form for the engine) and RFC-004 Molecular Lexicon (gold tier: the 28 hand-crafted survival molecules, integrity-checked).
+- The Convergence Invariant seeded: `data/conformance/meaning_sets.json` (20 meaning sets, es/en/zh) with `test_conformance.py` asserting one idea, one tree.
+### [ARCH]
 - The canonical form of K-65P is settled as numeric (prime ids); human languages are mechanical renderings (RFC-002 v1, three-level documentation convention).
 ### [NEW]
 - 65-prime multilingual table (`primes.py`: en/es/zh/fr/de) with conflict-checked symbol resolution.
