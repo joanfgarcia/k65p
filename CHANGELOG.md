@@ -21,5 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README truths: living parameter count instead of a stale figure; exact BitNet attribution (independent implementation of Microsoft Research's architecture).
 ### [QA]
 - `[FIRE HOT BAD]` demoted from blessed example to star negative test.
+### [DOCS]
+- `PROTOCOL_OF_SILENCE.md` written (it was an empty title): the eight rules, their enforcement, and their why.
+- General consistency pass: `ARCHITECTURE.md` aligned with RFC-002 v1 (canonical examples, Horn bridge marked implemented, exact BitNet attribution), `.agent/ATLAS.md` filled with the real project atlas, `pyproject.toml` description de-placeholdered, ROADMAP Phase 1 status: Gate G1 closed (open remainder: reference decompiler).
 ### [NEW]
 - Initial scaffold of the sovereign project.

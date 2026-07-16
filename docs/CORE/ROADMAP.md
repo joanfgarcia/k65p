@@ -31,6 +31,10 @@
 ## Phase 1 — Formal Closure of the Dialect (v0.2: translatable)
 
 *Goal: K-65P becomes mechanically translatable in both directions. No training yet.*
+> **Status 2026-07-16: Gate G1 CLOSED** — bridge round-trips green over the seed corpus,
+> gold lexicon integrity-checked, convergence suite seeded (20 sets es/en/zh), RFC-003/004
+> merged. Open remainder: the reference template decompiler (1.5) — presentation sugar,
+> not on the critical path to G2.
 
 | # | Deliverable | Where | Content |
 |---|---|---|---|

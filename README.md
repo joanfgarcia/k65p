@@ -65,7 +65,10 @@ Full specification: [RFC-002 K-65P Canonical Syntax](docs/CORE/RFC-002_K65P_SYNT
 ## 6. Getting Started
 
 Check the core documents to dive into the architecture and conventions:
+* [Roadmap: from dialect to native mind](docs/CORE/ROADMAP.md)
 * [RFC-002: Canonical Syntax & Reference Validator](docs/CORE/RFC-002_K65P_SYNTAX.md)
+* [RFC-003: The Horn Bridge (K-65P ↔ Prolog)](docs/CORE/RFC-003_HORN_BRIDGE.md)
+* [RFC-004: The Molecular Lexicon](docs/CORE/RFC-004_MOLECULAR_LEXICON.md)
 * [Architecture Specifications](docs/CORE/ARCHITECTURE.md)
 * [Coding Conventions](CONVENTIONS.md)
 * [Protocol of Silence](docs/CORE/PROTOCOL_OF_SILENCE.md)
