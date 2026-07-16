@@ -1,0 +1,146 @@
+{
+ "version": "0.1.0",
+ "invariant": "one idea, one tree: every rendering must compile to the identical canonical form",
+ "meaning_sets": [
+  {
+   "id": "seed-00",
+   "es": "[ver yo algo]",
+   "en": "[SEE I SOMETHING]",
+   "zh": "[看见 我 某事]",
+   "canonical": "[16 0 4]"
+  },
+  {
+   "id": "seed-01",
+   "es": "[oír tú agua]",
+   "en": "[HEAR YOU agua]",
+   "zh": "[听见 你 agua]",
+   "canonical": "[17 1 agua]"
+  },
+  {
+   "id": "seed-02",
+   "es": "[caliente fuego]",
+   "en": "[HOT fuego]",
+   "zh": "[热 fuego]",
+   "canonical": "[60 fuego]"
+  },
+  {
+   "id": "seed-03",
+   "es": "[malo [G fuego caliente]]",
+   "en": "[BAD [G fuego HOT]]",
+   "zh": "[坏 [G fuego 热]]",
+   "canonical": "[9 [G fuego 60]]"
+  },
+  {
+   "id": "seed-04",
+   "es": "[si [tocar alguien [G fuego caliente]] [pasar [G algo malo] alguien]]",
+   "en": "[IF [TOUCH SOMEONE [G fuego HOT]] [HAPPEN [G SOMETHING BAD] SOMEONE]]",
+   "zh": "[如果 [触摸 某人 [G fuego 热]] [发生 [G 某事 坏] 某人]]",
+   "canonical": "[48 [24 2 [G fuego 60]] [22 [G 4 9] 2]]"
+  },
+  {
+   "id": "seed-05",
+   "es": "[porque [mover tú lejos] [sentir yo malo]]",
+   "en": "[BECAUSE [MOVE YOU FAR] [FEEL I BAD]]",
+   "zh": "[因为 [移动 你 远] [感觉 我 坏]]",
+   "canonical": "[47 [23 1 40] [15 0 9]]"
+  },
+  {
+   "id": "seed-06",
+   "es": "[querer yo agua]",
+   "en": "[WANT I agua]",
+   "zh": "[想要 我 agua]",
+   "canonical": "[14 0 agua]"
+  },
+  {
+   "id": "seed-07",
+   "es": "[querer yo [hacer yo beber agua]]",
+   "en": "[WANT I [DO I beber agua]]",
+   "zh": "[想要 我 [做 我 beber agua]]",
+   "canonical": "[14 0 [21 0 beber agua]]"
+  },
+  {
+   "id": "seed-08",
+   "es": "[quizá [pasar lluvia]]",
+   "en": "[MAYBE [HAPPEN lluvia]]",
+   "zh": "[也许 [发生 lluvia]]",
+   "canonical": "[45 [22 lluvia]]"
+  },
+  {
+   "id": "seed-09",
+   "es": "[poder [mover yo]]",
+   "en": "[CAN [MOVE I]]",
+   "zh": "[能 [移动 我]]",
+   "canonical": "[46 [23 0]]"
+  },
+  {
+   "id": "seed-10",
+   "es": "[no [ver yo algo]]",
+   "en": "[NOT [SEE I SOMETHING]]",
+   "zh": "[不 [看见 我 某事]]",
+   "canonical": "[44 [16 0 4]]"
+  },
+  {
+   "id": "seed-11",
+   "es": "[saber yo [bueno agua]]",
+   "en": "[KNOW I [GOOD agua]]",
+   "zh": "[知道 我 [好 agua]]",
+   "canonical": "[13 0 [8 agua]]"
+  },
+  {
+   "id": "seed-12",
+   "es": "[querer yo [decir tú verdad yo]]",
+   "en": "[WANT I [SAY YOU TRUE I]]",
+   "zh": "[想要 我 [说 你 真 我]]",
+   "canonical": "[14 0 [18 1 20 0]]"
+  },
+  {
+   "id": "seed-13",
+   "es": "[vivir gente aquí]",
+   "en": "[LIVE PEOPLE HERE]",
+   "zh": "[活 人们 这里]",
+   "canonical": "[27 3 37]"
+  },
+  {
+   "id": "seed-14",
+   "es": "[antes [pequeño yo]]",
+   "en": "[BEFORE [SMALL I]]",
+   "zh": "[以前 [小 我]]",
+   "canonical": "[31 [11 0]]"
+  },
+  {
+   "id": "seed-15",
+   "es": "[después [pasar [G algo malo]]]",
+   "en": "[AFTER [HAPPEN [G SOMETHING BAD]]]",
+   "zh": "[以后 [发生 [G 某事 坏]]]",
+   "canonical": "[32 [22 [G 4 9]]]"
+  },
+  {
+   "id": "seed-16",
+   "es": "[como [G cosa este] agua]",
+   "en": "[LIKE [G THING THIS] agua]",
+   "zh": "[像 [G 东西 这个] agua]",
+   "canonical": "[51 [G 5 52] agua]"
+  },
+  {
+   "id": "seed-17",
+   "es": "[morir [G gente todo]]",
+   "en": "[DIE [G PEOPLE ALL]]",
+   "zh": "[死 [G 人们 所有]]",
+   "canonical": "[28 [G 3 58]]"
+  },
+  {
+   "id": "seed-18",
+   "es": "[porque [pensar yo] [existir yo]]",
+   "en": "[BECAUSE [THINK I] [EXIST I]]",
+   "zh": "[因为 [想 我] [存在 我]]",
+   "canonical": "[47 [12 0] [25 0]]"
+  },
+  {
+   "id": "seed-19",
+   "es": "[si [tocar tú [G agua frío]] [sentir tú frío]]",
+   "en": "[IF [TOUCH YOU [G agua COLD]] [FEEL YOU COLD]]",
+   "zh": "[如果 [触摸 你 [G agua 冷]] [感觉 你 冷]]",
+   "canonical": "[48 [24 1 [G agua 61]] [15 1 61]]"
+  }
+ ]
+}
