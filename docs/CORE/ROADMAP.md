@@ -154,6 +154,13 @@ Engine-line experiments (BitMambaBlock, trit-loss) remain governed by the archit
 Phases 1-2 live entirely in `k65p` and need no GPU. Phase 3 warms up while the linguistic
 Bit finishes school. Phase 4 starts only with G3 done **and** the control graduated.
 
+**The GPU window (v5 note, 2026-07-31):** between the control's graduation and the start of
+Phase 4, the GPU sits idle while Phase 3 (CPU factory) runs. That window belongs to the
+engine line: Net2DeeperNet depth expansion **on a copy** of the graduated checkpoint
+(`Aleth_Core/bitnet_next_architecture_plan.md` v5 §5). The control itself is frozen at
+graduation and untouchable (§0.2); the native Bit inherits the control's exact growth
+policy for G4 comparability (plan §7.2 — pre-registered confound guard).
+
 ---
 
 *Nothing in this roadmap is founded on vision alone: every phase consumes the previous

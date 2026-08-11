@@ -44,6 +44,9 @@ def load_lexicon(path: Path | str = DEFAULT_LEXICON_PATH) -> dict[str, dict]:
 	return molecules
 
 
-def molecule_names(path: Path | str = DEFAULT_LEXICON_PATH) -> set[str]:
+def molecule_names(path: Path | str = DEFAULT_LEXICON_PATH, lang: str = "es") -> set[str]:
 	"""The lexicon as the `lexicon=` argument the validator expects."""
-	return {name.casefold() for name in load_lexicon(path)}
+	lex = load_lexicon(path)
+	if lang == "en":
+		return {v.get("en", name).casefold() for name, v in lex.items()}
+	return {name.casefold() for name in lex}
