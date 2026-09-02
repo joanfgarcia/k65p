@@ -168,7 +168,16 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None) -> list[str]:
 			else:
 				errors.append(f"{path}: prime {symbol_for(operator, 'en')} is not an operator")
 		elif operator is not None:
-			errors.append(f"{path}: unknown operator {operator!r}")
+			# DL-018 (2026-09-02): las moléculas (palabras del léxico) valen
+			# como cabezas UNARIAS — el mecanismo de compuesta/atribución.
+			# [lobo peligro] = "un tipo de lobo, el peligroso" (compuesta, en
+			# posición de átomo) o [peligro lobo] = "lobo está en peligro"
+			# (predicación). La distinción es SEMÁNTICA (posición), no de
+			# forma: la gramática solo exige exactamente 1 argumento.
+			if len(args) != 1:
+				errors.append(
+					f"{path}: molecule head {operator!r} expects exactly 1 argument, got {len(args)}"
+				)
 		for index, arg in enumerate(args):
 			_check(arg, f"{path}.{index}")
 

@@ -28,8 +28,11 @@ def test_canonical_numeric_form_validates() -> None:
 
 
 def test_fire_hot_bad_is_not_k65p() -> None:
+	# DL-018: los encabezados de moléculas son unarios — tres átomos desnudos
+	# siguen sin ser K-65P (el error ahora nombra la aridad de la molécula)
 	errors = validate("[FIRE HOT BAD]")
-	assert any("unknown operator 'fire'" in error for error in errors)
+	assert errors, "[FIRE HOT BAD] debe seguir siendo inválido"
+	assert any("expects exactly 1 argument" in error for error in errors)
 
 
 def test_mixed_language_resolves_to_one_compound() -> None:
