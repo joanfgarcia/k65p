@@ -40,7 +40,11 @@ PREDICATES: dict[int, tuple[int, int]] = {
 EVALUATORS: frozenset[int] = frozenset({8, 9, 10, 11, 26, 60, 61, 64})
 
 # Unary operators over a clause: logical + spatio-temporal frames.
-UNARY: frozenset[int] = frozenset({44, 45, 46, 31, 30, 32, 37, 41, 40, 38, 39, 43})
+# DL-020 (3-sep): VERY (49) se une — el intensificador NSM opera sobre
+# cláusulas atributivas: [very [small baby]] = "muy pequeño". Sin posición
+# combinatoria para VERY, las distinciones graduales (very young vs young)
+# no pueden producir huellas distintas.
+UNARY: frozenset[int] = frozenset({44, 45, 46, 31, 30, 32, 37, 41, 40, 38, 39, 43, 49})
 
 # Binary connectors, foreground-first (condition/cause/base always leads).
 BINARY: frozenset[int] = frozenset({48, 47, 51})
