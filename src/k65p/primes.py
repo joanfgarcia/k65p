@@ -83,6 +83,7 @@ N_PRIMES = len(PRIMES)
 
 # Structural group functor: not a prime, part of the syntax alphabet.
 GROUP = "G"
+NAME = "N"  # DL-021: marcador de nombre propio — [N partes...] = un símbolo
 
 
 def _build_symbol_map() -> dict[str, int]:

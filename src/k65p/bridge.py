@@ -11,7 +11,7 @@ The bridge refuses invalid K-65P: translation presupposes certification.
 import re
 
 from k65p.core import SExpr, parse_k65p
-from k65p.primes import GROUP, PRIMES, symbol_for
+from k65p.primes import GROUP, NAME, PRIMES, symbol_for
 from k65p.validator import BINARY, EVALUATORS, PREDICATES, UNARY, _resolve_tree, validate
 
 
@@ -52,6 +52,15 @@ def _term(node: list | int | str) -> str:
 	if head == GROUP:
 		mods = ",".join(_atom_to_prolog(arg) for arg in args[1:])
 		return f"g({_atom_to_prolog(args[0])},[{mods}])"
+	if head == NAME:
+		# DL-021: [N juan francisco] → átomo Prolog juan_francisco (convención
+		# de unión por '_'; las partes no pueden contener '_')
+		joined = "_".join(str(p) for p in args)
+		return joined if _UNQUOTED.match(joined) else "'" + joined + "'"
+	if isinstance(head, str):
+		# DL-018/021: cabezas-molécula (compuestas, atribuciones, relaciones
+		# sobre nombres) — el functor es la palabra misma, escapada si hace falta
+		return f"{_atom_to_prolog(head)}({','.join(_term(arg) for arg in args)})"
 	return f"{_FUNCTORS[head]}({','.join(_term(arg) for arg in args)})"
 
 
