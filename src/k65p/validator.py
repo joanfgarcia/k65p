@@ -10,7 +10,7 @@ and the document gets fixed.
 """
 
 from k65p.core import Atom, SExpr, parse_k65p
-from k65p.primes import GROUP, NAME, N_PRIMES, SYMBOL_TO_ID, symbol_for
+from k65p.primes import GROUP, NAME, N_PRIMES, QMARK, SYMBOL_TO_ID, symbol_for
 
 
 class K65PResolveError(ValueError):
@@ -57,6 +57,8 @@ def resolve_atom(atom: Atom) -> int | str:
 		return GROUP
 	if name == "N":
 		return NAME
+	if name == "Q":
+		return QMARK
 	if name.lstrip("-").isdigit():
 		prime_id = int(name)
 		if not 0 <= prime_id < N_PRIMES:
@@ -153,6 +155,21 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str]
 		if names is not None and isinstance(head, Atom) and head.name.casefold() in names:
 			errors.append(f"{path}: proper name {head.name!r} is not a predicate — "
 				f"names occur only as [N ...] arguments")
+			return
+		if operator == QMARK:
+			# DL-023: [Q cláusula] — la fuerza ilocutiva es del intérprete:
+			# curiosidad, duda, sorpresa, reto... El marcador exige EXACTAMENTE
+			# una cláusula (lo cuestionado); sin nesting de Q. La intención
+			# específica viaja en las moléculas de intención que el intérprete
+			# arrastra dentro; el glifo del token Q porta el núcleo
+			# querer+saber (la explicación NSM de preguntar)
+			if len(args) != 1 or not isinstance(args[0], list):
+				errors.append(f"{path}: [Q] expects exactly one clause — the questioned proposition")
+				return
+			if isinstance(args[0][0], Atom) and args[0][0].name == "Q":
+				errors.append(f"{path}: nested [Q] — the intent is one, not recursive")
+				return
+			_check(args[0], f"{path}.q")
 			return
 		if operator == NAME:
 			# [N partes...] — el corchete completo ES el símbolo: partes son
