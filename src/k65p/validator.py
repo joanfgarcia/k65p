@@ -134,7 +134,7 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str]
 			return None
 		if lexicon is not None and isinstance(resolved, str) and resolved != GROUP and resolved not in lexicon:
 			# DL-024: las variables (x-minúscula) no son conceptos — están exentas
-			if not (len(atom.name) > 1 and atom.name[0] == "x" and atom.name[1:2].isalpha()):
+			if not (len(atom.name) > 1 and atom.name[0] in ("x", "X") and atom.name[1:2].isalpha()):
 				errors.append(f"{path}: word {resolved!r} not in the lexicon")
 		return resolved
 
@@ -234,7 +234,7 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str]
 					and a[0].name == "N")
 			def _is_variable(a) -> bool:
 				return (isinstance(a, Atom) and len(a.name) > 1
-					and a.name[0] == "x" and a.name[1:2].isalpha())
+					and a.name[0] in ("x", "X") and a.name[1:2].isalpha())
 			is_relation = 2 <= len(args) <= 3 and any(
 				_is_name_term(a) or _is_variable(a) for a in args
 			)
