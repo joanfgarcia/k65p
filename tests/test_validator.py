@@ -28,8 +28,11 @@ def test_canonical_numeric_form_validates() -> None:
 
 
 def test_fire_hot_bad_is_not_k65p() -> None:
+	# DL-018: los encabezados de moléculas son unarios — tres átomos desnudos
+	# siguen sin ser K-65P (el error ahora nombra la aridad de la molécula)
 	errors = validate("[FIRE HOT BAD]")
-	assert any("unknown operator 'fire'" in error for error in errors)
+	assert errors, "[FIRE HOT BAD] debe seguir siendo inválido"
+	assert any("expects exactly 1 argument" in error for error in errors)
 
 
 def test_mixed_language_resolves_to_one_compound() -> None:
@@ -109,3 +112,34 @@ def test_primes_table_shape() -> None:
 
 def test_render_keeps_lexicon_words() -> None:
 	assert render("[querer yo [hacer yo beber agua]]", "en") == "[WANT I [DO I beber agua]]"
+
+
+# ── DL-021: nombres propios como símbolos ──
+
+def test_name_terms_are_valid() -> None:
+	assert validate("[capital [N paris] [N france]]") == []
+	assert validate("[N juan francisco garcia]") == []
+	assert validate("[have [N juan] dog]") == []
+
+
+def test_name_marker_rules() -> None:
+	assert validate("[N]")                       # vacía
+	assert validate("[N [N a]]")                 # N anidado
+	assert validate("[N [G a b]]")               # cláusula dentro
+	assert validate("[N water]")                 # colisión con primo
+	assert validate("[fuego agua tierra]")       # bolsa sin nombres: fuera
+
+
+def test_names_are_never_heads() -> None:
+	# la relación es la cabeza; el nombre solo argumento
+	assert validate("[[N juan] have dog]"), "un nombre no puede encabezar"
+	assert validate("[have [N juan] dog]") == []
+	# con namespace declarado, el átomo-nombre desnudo tampoco encabeza
+	assert validate("[paris algo]", names={"paris"})
+
+
+def test_name_bridge_flattening() -> None:
+	from k65p.bridge import to_prolog
+	assert to_prolog("[capital [N paris] [N france]]") == "capital(paris,france)."
+	assert to_prolog("[N juan francisco garcia]") == "juan_francisco_garcia."
+	assert to_prolog("[have [N juan] dog]") == "have(juan,dog)."

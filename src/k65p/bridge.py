@@ -11,7 +11,7 @@ The bridge refuses invalid K-65P: translation presupposes certification.
 import re
 
 from k65p.core import SExpr, parse_k65p
-from k65p.primes import GROUP, PRIMES, symbol_for
+from k65p.primes import GROUP, NAME, PRIMES, symbol_for
 from k65p.validator import BINARY, EVALUATORS, PREDICATES, UNARY, _resolve_tree, validate
 
 
@@ -42,6 +42,10 @@ _UNQUOTED = re.compile(r"^[a-z][a-zA-Z0-9_]*$")
 
 def _atom_to_prolog(resolved: int | str) -> str:
 	name = _ARG_ATOM[resolved] if isinstance(resolved, int) else resolved
+	# DL-024: las variables K-65P (x-minúscula) cruzan como variables Prolog
+	# (mayúscula inicial obligatoria): xsomething → Xsomething
+	if isinstance(name, str) and len(name) > 1 and name[0] in ("x", "X") and name[1:2].isalpha():
+		return "X" + name[1:]
 	return name if _UNQUOTED.match(name) else "'" + name.replace("'", "\\'") + "'"
 
 
@@ -52,6 +56,15 @@ def _term(node: list | int | str) -> str:
 	if head == GROUP:
 		mods = ",".join(_atom_to_prolog(arg) for arg in args[1:])
 		return f"g({_atom_to_prolog(args[0])},[{mods}])"
+	if head == NAME:
+		# DL-021: [N juan francisco] → átomo Prolog juan_francisco (convención
+		# de unión por '_'; las partes no pueden contener '_')
+		joined = "_".join(str(p) for p in args)
+		return joined if _UNQUOTED.match(joined) else "'" + joined + "'"
+	if isinstance(head, str):
+		# DL-018/021: cabezas-molécula (compuestas, atribuciones, relaciones
+		# sobre nombres) — el functor es la palabra misma, escapada si hace falta
+		return f"{_atom_to_prolog(head)}({','.join(_term(arg) for arg in args)})"
 	return f"{_FUNCTORS[head]}({','.join(_term(arg) for arg in args)})"
 
 

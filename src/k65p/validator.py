@@ -10,7 +10,7 @@ and the document gets fixed.
 """
 
 from k65p.core import Atom, SExpr, parse_k65p
-from k65p.primes import GROUP, N_PRIMES, SYMBOL_TO_ID, symbol_for
+from k65p.primes import GROUP, NAME, N_PRIMES, QMARK, SYMBOL_TO_ID, symbol_for
 
 
 class K65PResolveError(ValueError):
@@ -40,7 +40,11 @@ PREDICATES: dict[int, tuple[int, int]] = {
 EVALUATORS: frozenset[int] = frozenset({8, 9, 10, 11, 26, 60, 61, 64})
 
 # Unary operators over a clause: logical + spatio-temporal frames.
-UNARY: frozenset[int] = frozenset({44, 45, 46, 31, 30, 32, 37, 41, 40, 38, 39, 43})
+# DL-020 (3-sep): VERY (49) se une — el intensificador NSM opera sobre
+# cláusulas atributivas: [very [small baby]] = "muy pequeño". Sin posición
+# combinatoria para VERY, las distinciones graduales (very young vs young)
+# no pueden producir huellas distintas.
+UNARY: frozenset[int] = frozenset({44, 45, 46, 31, 30, 32, 37, 41, 40, 38, 39, 43, 49})
 
 # Binary connectors, foreground-first (condition/cause/base always leads).
 BINARY: frozenset[int] = frozenset({48, 47, 51})
@@ -51,6 +55,10 @@ def resolve_atom(atom: Atom) -> int | str:
 	name = atom.name
 	if name in {"G", "g"}:
 		return GROUP
+	if name == "N":
+		return NAME
+	if name == "Q":
+		return QMARK
 	if name.lstrip("-").isdigit():
 		prime_id = int(name)
 		if not 0 <= prime_id < N_PRIMES:
@@ -100,11 +108,13 @@ def render(tree: SExpr | str, lang: str) -> str:
 	return _walk(resolved)
 
 
-def validate(tree: SExpr | str, lexicon: set[str] | None = None) -> list[str]:
+def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str] | None = None) -> list[str]:
 	"""Validate a K-65P v0 expression. Returns error strings; empty = valid.
 
 	Accepts canonical ids or any language rendering. If `lexicon` is given,
-	atoms that are neither primes nor in the lexicon are reported.
+	atoms that are neither primes nor in the lexicon are reported. If `names`
+	is given, those atoms are proper-name symbols (DL-021): they may only
+	occur as arguments wrapped in [N ...] — never as clause heads.
 	"""
 	if isinstance(tree, str):
 		try:
@@ -123,7 +133,9 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None) -> list[str]:
 			errors.append(f"{path}: {exc}")
 			return None
 		if lexicon is not None and isinstance(resolved, str) and resolved != GROUP and resolved not in lexicon:
-			errors.append(f"{path}: word {resolved!r} not in the lexicon")
+			# DL-024: las variables (x-minúscula) no son conceptos — están exentas
+			if not (len(atom.name) > 1 and atom.name[0] in ("x", "X") and atom.name[1:2].isalpha()):
+				errors.append(f"{path}: word {resolved!r} not in the lexicon")
 		return resolved
 
 	def _check(node: SExpr, path: str) -> None:
@@ -140,6 +152,47 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None) -> list[str]:
 				_check(arg, f"{path}.{index}")
 			return
 		operator = _check_atom(head, path)
+		# DL-021: un nombre propio jamás encabeza una cláusula — no es
+		# predicado ni concepto; solo argumento dentro de [N ...]
+		if names is not None and isinstance(head, Atom) and head.name.casefold() in names:
+			errors.append(f"{path}: proper name {head.name!r} is not a predicate — "
+				f"names occur only as [N ...] arguments")
+			return
+		if operator == QMARK:
+			# DL-023: [Q cláusula] — la fuerza ilocutiva es del intérprete:
+			# curiosidad, duda, sorpresa, reto... El marcador exige EXACTAMENTE
+			# una cláusula (lo cuestionado); sin nesting de Q. La intención
+			# específica viaja en las moléculas de intención que el intérprete
+			# arrastra dentro; el glifo del token Q porta el núcleo
+			# querer+saber (la explicación NSM de preguntar)
+			if len(args) != 1 or not isinstance(args[0], list):
+				errors.append(f"{path}: [Q] expects exactly one clause — the questioned proposition")
+				return
+			if isinstance(args[0][0], Atom) and args[0][0].name == "Q":
+				errors.append(f"{path}: nested [Q] — the intent is one, not recursive")
+				return
+			_check(args[0], f"{path}.q")
+			return
+		if operator == NAME:
+			# [N partes...] — el corchete completo ES el símbolo: partes son
+			# átomos desnudos (sin cláusulas, sin N anidado, sin G), aridad ≥1,
+			# exentos del léxico, sin colisión con primos (la huella es del
+			# concepto, no de la dirección)
+			if not args:
+				errors.append(f"{path}: [N] without name parts")
+				return
+			for index, arg in enumerate(args):
+				if not isinstance(arg, Atom):
+					errors.append(f"{path}.{index}: name parts must be bare atoms, not clauses")
+					continue
+				try:
+					resolved = resolve_atom(arg)
+				except K65PResolveError:
+					continue
+				if isinstance(resolved, int):
+					errors.append(f"{path}.{index}: name part {arg.name!r} collides with prime "
+						f"{symbol_for(resolved, 'en')} — a name is an address, not a concept")
+			return
 		if operator == GROUP:
 			if not args:
 				errors.append(f"{path}: group [G] without a head")
@@ -168,7 +221,28 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None) -> list[str]:
 			else:
 				errors.append(f"{path}: prime {symbol_for(operator, 'en')} is not an operator")
 		elif operator is not None:
-			errors.append(f"{path}: unknown operator {operator!r}")
+			# DL-018: moléculas como cabezas unarias (compuesta/atribución).
+			# DL-021: RELACIÓN — 2-3 argumentos solo si el hecho involucra un
+			# término-nombre [N ...] (capital-de/2, have/2 sobre entidades
+			# nombradas). Sin nombres sigue la unaria estricta: las bolsas de
+			# átomos siguen fuera de la gramática.
+			# DL-024: las VARIABLES (átomos x-minúscula: xsomething) también
+			# habilitan la relación — una cláusula con variables es una REGLA,
+			# no una bolsa: [belong xsomething i] es esquema, no hecho.
+			def _is_name_term(a) -> bool:
+				return (isinstance(a, list) and a and isinstance(a[0], Atom)
+					and a[0].name == "N")
+			def _is_variable(a) -> bool:
+				return (isinstance(a, Atom) and len(a.name) > 1
+					and a.name[0] in ("x", "X") and a.name[1:2].isalpha())
+			is_relation = 2 <= len(args) <= 3 and any(
+				_is_name_term(a) or _is_variable(a) for a in args
+			)
+			if len(args) != 1 and not is_relation:
+				errors.append(
+					f"{path}: molecule head {operator!r} expects exactly 1 argument, got {len(args)}"
+					+ (" (≥2 args require a [N ...] name term: relation over named entities)" if len(args) > 1 else "")
+				)
 		for index, arg in enumerate(args):
 			_check(arg, f"{path}.{index}")
 
