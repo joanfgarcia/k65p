@@ -42,6 +42,10 @@ _UNQUOTED = re.compile(r"^[a-z][a-zA-Z0-9_]*$")
 
 def _atom_to_prolog(resolved: int | str) -> str:
 	name = _ARG_ATOM[resolved] if isinstance(resolved, int) else resolved
+	# DL-024: las variables K-65P (x-minúscula) cruzan como variables Prolog
+	# (mayúscula inicial obligatoria): xsomething → Xsomething
+	if isinstance(name, str) and len(name) > 1 and name[0] == "x" and name[1:2].isalpha():
+		return name[0].upper() + name[1:]
 	return name if _UNQUOTED.match(name) else "'" + name.replace("'", "\\'") + "'"
 
 

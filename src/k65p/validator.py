@@ -133,7 +133,9 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str]
 			errors.append(f"{path}: {exc}")
 			return None
 		if lexicon is not None and isinstance(resolved, str) and resolved != GROUP and resolved not in lexicon:
-			errors.append(f"{path}: word {resolved!r} not in the lexicon")
+			# DL-024: las variables (x-minúscula) no son conceptos — están exentas
+			if not (len(atom.name) > 1 and atom.name[0] == "x" and atom.name[1:2].isalpha()):
+				errors.append(f"{path}: word {resolved!r} not in the lexicon")
 		return resolved
 
 	def _check(node: SExpr, path: str) -> None:
@@ -224,9 +226,17 @@ def validate(tree: SExpr | str, lexicon: set[str] | None = None, names: set[str]
 			# término-nombre [N ...] (capital-de/2, have/2 sobre entidades
 			# nombradas). Sin nombres sigue la unaria estricta: las bolsas de
 			# átomos siguen fuera de la gramática.
+			# DL-024: las VARIABLES (átomos x-minúscula: xsomething) también
+			# habilitan la relación — una cláusula con variables es una REGLA,
+			# no una bolsa: [belong xsomething i] es esquema, no hecho.
+			def _is_name_term(a) -> bool:
+				return (isinstance(a, list) and a and isinstance(a[0], Atom)
+					and a[0].name == "N")
+			def _is_variable(a) -> bool:
+				return (isinstance(a, Atom) and len(a.name) > 1
+					and a.name[0] == "x" and a.name[1:2].isalpha())
 			is_relation = 2 <= len(args) <= 3 and any(
-				isinstance(a, list) and a and isinstance(a[0], Atom) and a[0].name == "N"
-				for a in args
+				_is_name_term(a) or _is_variable(a) for a in args
 			)
 			if len(args) != 1 and not is_relation:
 				errors.append(
